@@ -1,0 +1,36 @@
+// media
+$screen-max-width: var(--screen-max-width);
+$screen-min-width: var(--screen-min-width);
+$desktop-hd: 1800px;
+$desktop: 1280px;
+$tablets-big: 960px;
+$tablets: 768px;
+$phones: 460px;
+
+//font
+$font: var(--font);
+//// primary colors
+// text color
+$text-1: var(--text-1);
+$text-2: var(--text-2);
+// bg color
+$bg: var(--bg);
+$bg-mute: var(--bg-mute);
+
+//// decorators
+$btn-br: var(--btn-br);
+$btn-pdn: var(--btn-pdn);
+/* interactive hover, focus */
+
+
+/* status color */
+
+/* header */
+$header-height: var(--header-height);
+
+/* z-index */
+$z-index-local-nav: 10;
+$z-index-nav: 20;
+$z-index-banner: 30;
+$z-index-backdrop: 40;
+$z-index-sidebar: 50;
