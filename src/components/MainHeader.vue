@@ -8,10 +8,9 @@
         <div class="content">
           <main-slogan />
           <change-appearance />
-          <!--          <main-socials />-->
-          <!--          <main-extra />-->
-          <!--          <main-profile />-->
-          <!--          <main-burger />-->
+          <main-messages />
+          <main-notification />
+          <main-profile />
         </div>
       </div>
     </div>
@@ -22,8 +21,9 @@
 import MainLogo from '@/components/MainLogo.vue'
 import ChangeAppearance from '@/components/ChangeAppearence.vue'
 import MainSlogan from '@/components/MainSlogan.vue'
-// import MainProfile from '@/components/MainProfile.vue'
-// import MainBurger from '@/components/MainBurger.vue'
+import MainMessages from '@/components/MainMessages.vue'
+import MainNotification from '@/components/MainNotification.vue'
+import MainProfile from '@/components/MainProfile.vue'
 </script>
 
 <style lang="scss" scoped>
@@ -39,7 +39,7 @@ import MainSlogan from '@/components/MainSlogan.vue'
 
 .navbar {
   position: relative;
-  padding: 0 12px 0 24px;
+  padding: 0 12px;
   height: $header-height;
   background-color: $bg;
   transition: color .5s, background-color .5s;
@@ -57,9 +57,14 @@ import MainSlogan from '@/components/MainSlogan.vue'
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 0;
   height: 100%;
   max-width: $screen-max-width;
   margin: 0 auto;
+
+  @include tablets-big() {
+    gap: 1rem;
+  }
 }
 
 .content {
@@ -67,6 +72,11 @@ import MainSlogan from '@/components/MainSlogan.vue'
   justify-content: flex-end;
   align-items: center;
   flex-grow: 1;
+  gap: 5px;
+
+  @include tablets-big() {
+    gap: 10px;
+  }
 }
 
 .nav-screen {

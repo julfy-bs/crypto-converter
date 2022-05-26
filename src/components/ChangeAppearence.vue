@@ -42,8 +42,8 @@ const { toggleTheme } = useAppearance()
   position: relative;
   display: flex;
   align-items: center;
-  height: 48px;
-  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
 
   &:hover {
     .switch__moon, .switch__sun {
@@ -54,8 +54,12 @@ const { toggleTheme } = useAppearance()
 
 .switch__check {
   width: 100%;
-  height: 48px;
   overflow: hidden;
+  height: 44px;
+
+  @include tablets-big() {
+    height: 48px;
+  }
 }
 
 .switch__icon {
@@ -65,24 +69,29 @@ const { toggleTheme } = useAppearance()
 
 .switch__moon, .switch__sun {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  gap: 1rem;
-  color: $text-1;
   padding: $btn-pdn;
   border-radius: $btn-br;
   transition: background-color .5s, color .5s;
+
+  @include tablets-big() {
+    justify-content: space-between;
+    gap: 1rem;
+  }
 
   svg {
     max-width: 20px;
     max-height: 20px;
     flex: 0 0 auto;
+    color: $text-3;
   }
 
   span {
     display: none;
     flex: 1 0 auto;
     font-weight: 300;
+    color: $text-2;
 
     @include tablets-big() {
       display: block;
@@ -91,7 +100,11 @@ const { toggleTheme } = useAppearance()
 }
 
 .dark-theme .appearance .switch__icon {
-  transform: translateY(-48px);
+  transform: translateY(-44px);
+
+  @include tablets-big() {
+    transform: translateY(-48px);
+  }
 }
 
 .switch__sun, .dark-theme .switch__moon {

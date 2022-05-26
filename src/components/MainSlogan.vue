@@ -12,6 +12,13 @@
 @import "../assets/styles/mixins";
 
 .slogan {
+  flex: 1 0 fit-content;
+  display: none;
+
+  @include tablets-big() {
+    display: block;
+  }
+
   span {
     font-weight: 300;
     font-size: 16px;

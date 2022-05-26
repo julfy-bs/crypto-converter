@@ -1,6 +1,10 @@
 <template>
   <main-header />
-  <router-view />
+  <main class="main">
+    <div class="main__container">
+      <router-view />
+    </div>
+  </main>
 </template>
 
 <script setup lang="ts">
@@ -11,9 +15,9 @@ import MainHeader from '@/components/MainHeader.vue'
 /* General variables */
 :root {
   --font: 'Codec Pro', -apple-system, sans-serif;
-  --header-height: 60px;
+  --header-height: 80px;
   --screen-max-width: 1376px;
-  --screen-min-width: 320px;
+  --screen-min-width: 380px;
   // colors
   --c-base-0: #FCFCFC;
   --c-base-50: #F3F4F6;
@@ -24,15 +28,27 @@ import MainHeader from '@/components/MainHeader.vue'
   --c-main-400: #4959FF;
   --c-secondary: #F84AB3;
   --c-secondary-500: #F61D9F;
-  // decorators
+  //// decorators
+  // btn
   --btn-br: 6px;
   --btn-pdn: 12px;
+  // page content
+  --page-pdn: 56px 64px;
+
+  @media (min-width: 460px) {
+    --header-height: 90px;
+  }
+
+  @media (min-width: 768px) {
+    --header-height: 100px;
+  }
 }
 
 /* Light mode variables */
 :root.light-theme {
   --text-1: var(--c-base-500);
   --text-2: var(--c-base-300);
+  --text-3: var(--c-base-200);
 
   --bg: var(--c-base-0);
   --bg-mute: var(--c-base-50);
@@ -42,16 +58,27 @@ import MainHeader from '@/components/MainHeader.vue'
 :root.dark-theme {
   --text-1: var(--c-base-0);
   --text-2: var(--c-base-200);
+  --text-3: var(--c-base-200);
 
   --bg: var(--c-base-500);
   --bg-mute: var(--c-base-600);
 }
 
-@import "src/assets/styles/_variables.scss";
+@import "@/assets/styles/_variables.scss";
+@import "@/assets/styles/_mixins.scss";
 
 html {
   scroll-behavior: smooth;
-  font-size: 16px;
+  font-size: 12px;
+
+
+  @include phones() {
+    font-size: 14px;
+  }
+
+  @include tablets() {
+    font-size: 16px;
+  }
 }
 
 .app__container {
@@ -76,8 +103,8 @@ body {
 
 body {
   width: 100%;
+  height: 100vh;
   min-width: $screen-min-width;
-  min-height: 100vh;
   font-family: $font;
   letter-spacing: .2px;
   line-height: 24px;
@@ -165,5 +192,21 @@ section {
 [data-tooltip]:hover::after {
   opacity: 1;
   top: 3rem;
+}
+
+.main {
+  background-color: $bg;
+  transition: color .5s, background-color .5s;
+}
+
+.main__container {
+  padding: 0 0 20px 0;
+  max-width: $screen-max-width;
+  margin: 0 auto;
+  height: calc(100vh - #{$header-height});
+
+  @include phones() {
+    padding: 0 0 30px 0;
+  }
 }
 </style>

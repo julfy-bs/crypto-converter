@@ -31,15 +31,28 @@ import ElementSvg from '@/components/UI/ElementSvg.vue'
 }
 
 .logo__icon {
-  width: 48px;
-  height: 48px;
+  width: 32px;
+  height: 32px;
+
+  @include phones() {
+    width: 48px;
+    height: 48px;
+  }
 }
 
 .logo__text {
   font-weight: 500;
-  font-size: 30px;
+  font-size: 20px;
   line-height: 120%;
   letter-spacing: -0.03em;
   transition: color .25s;
+
+  @include phones() {
+    font-size: 26px;
+  }
+
+  @include tablets() {
+    font-size: 30px;
+  }
 }
 </style>
