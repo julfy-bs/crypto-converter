@@ -16,9 +16,9 @@ import {
   LinearScale,
   PointElement,
   LineElement,
-  Tooltip
+  Tooltip,
+  ActiveElement
 } from 'chart.js'
-
 
 interface Props {
   labels: string[];
@@ -42,14 +42,16 @@ const data = computed(() => ({
 Chart.defaults.font.family = 'Codec Pro'
 Chart.defaults.font.size = 10
 Chart.defaults.font.weight = '300'
-/* tslint:disable */
+
 const tooltipLine = {
   id: 'tooltipLine',
+  type: 'line',
   beforeDraw: (chart: Chart) => {
-    if (chart.tooltip?._active && chart.tooltip?._active.length) {
+    const active: ActiveElement[] = chart.getActiveElements()
+    if (active && active.length) {
       const ctx = chart.ctx
       ctx.save()
-      const activePoint = chart.tooltip?._active[0]
+      const activePoint = active[0]
       // bottom line - red
       ctx.beginPath()
       ctx.moveTo(activePoint.element.x, activePoint.element.y)
@@ -70,6 +72,7 @@ const tooltipLine = {
   }
 }
 
+
 const options = ref({
   responsive: true,
   maintainAspectRatio: false,
@@ -81,14 +84,15 @@ const options = ref({
   hoverBorderColor: ['#FCFCFC'],
   backgroundColor: ['#4959FF'],
   borderColor: ['#4959FF'],
-  borderWidth: 1,
+  borderWidth: 2,
+  tension: .3,
+  pointRadius: 0,
+  pointBorderWidth: 0,
   pointBackgroundColor: ['#FCFCFC'],
-  pointBorderColor: ['#4959FF'],
-  pointRadius: 2,
-  pointBorderWidth: 1,
-  pointHoverBorderWidth: 0,
+  pointHoverBorderWidth: 10,
   pointHoverRadius: 5,
-  pointHoverBackgroundColor: ['#F84AB3'],
+  pointHoverBackgroundColor: ['rgba(73, 89, 255, 1)'],
+  pointHoverBorderColor: ['rgba(73, 89, 255, .3)'],
   scales: {
     xAxes: {
       ticks: {
@@ -98,6 +102,7 @@ const options = ref({
     yAxes: {
       display: true,
       ticks: {
+        display: true,
         color: '#677B8F',
         callback: (value: number): string => {
           return new Intl.NumberFormat('eu-EU', { style: 'currency', currency: 'USD' }).format(value)
@@ -105,7 +110,13 @@ const options = ref({
       }
     }
   },
-  plugins: [tooltipLine]
+  plugins: [{
+    tooltipLine,
+    title: {
+      display: true,
+      text: 'Custom Chart Title'
+    }
+  }]
 })
 
 Chart.register(
@@ -132,7 +143,7 @@ Chart.register(
   position: relative;
   margin: 0 auto;
   width: 100%;
-  height: 500px;
+  height: 400px;
   padding: $page-pdn-small;
 }
 </style>

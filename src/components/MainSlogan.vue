@@ -24,6 +24,7 @@
     font-size: 16px;
     line-height: 152%;
     color: $text-2;
+    transition: color .25s;
   }
 }
 </style>

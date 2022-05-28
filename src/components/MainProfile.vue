@@ -40,11 +40,12 @@
 }
 
 .user__name {
+  color: $text-1;
+  transition: color .25s;
   font-style: normal;
   font-weight: 500;
   font-size: 16px;
   line-height: 152%;
-  color: $text-1;
   display: none;
 
   @include tablets-big() {

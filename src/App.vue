@@ -5,7 +5,12 @@
     <main-header />
     <main class="main">
       <div class="main__container">
-        <router-view />
+        <div
+          id="content"
+          class="content__wrapper"
+        >
+          <router-view />
+        </div>
       </div>
     </main>
   </div>
@@ -24,14 +29,15 @@ import MainHeader from '@/components/MainHeader.vue'
   --screen-min-width: 380px;
   // colors
   --c-base-0: #FCFCFC;
-  --c-base-0-op-1: rgba(252,252,252, .1);
+  --c-base-0-op-1: rgba(252, 252, 252, .1);
   --c-base-50: #F3F4F6;
   --c-base-200: #99A7B5;
   --c-base-300: #677B8F;
   --c-base-500: #012345;
-  --c-base-500-op-1: rgba(1,35,69, .1);
+  --c-base-500-op-1: rgba(1, 35, 69, .1);
   --c-base-600: #011C37;
   --c-main-400: #4959FF;
+  --c-main-400-op-1: rgba(73, 89, 255, .5);
   --c-secondary: #F84AB3;
   --c-secondary-500: #F61D9F;
   --c-secondary-100: #42B883;
@@ -39,11 +45,14 @@ import MainHeader from '@/components/MainHeader.vue'
   // btn
   --btn-br: 6px;
   --btn-pdn: 12px;
+  --btn-height: 40px;
   // page content
   --header-padding: 0 16px;
   --page-pdn: 32px 16px;
   --page-pdn-small: 4px 8px;
   --page-br: 24px;
+  // box-shadow
+  --shadow-1: 0 1px 2px rgba(0, 0, 0, .04), 0 1px 2px rgba(0, 0, 0, .06);
 
   @media (min-width: 460px) {
     --header-height: 90px;
@@ -71,7 +80,7 @@ import MainHeader from '@/components/MainHeader.vue'
 
   @media (min-width: 1280px) {
     --header-height: 100px;
-    --header-padding: 0 64px;
+    --header-padding: 0 8px 0 0;
     --page-pdn: 56px 64px;
     --page-pdn-small: 28px 32px;
     --page-br: 48px;
@@ -106,7 +115,7 @@ import MainHeader from '@/components/MainHeader.vue'
 html {
   scroll-behavior: smooth;
   font-size: 12px;
-
+  background-color: var(--bg);
 
   @include phones() {
     font-size: 14px;
@@ -193,12 +202,6 @@ img, video {
   height: auto;
 }
 
-section {
-  padding: 100px 32px;
-  max-width: 960px;
-  margin: 0 auto;
-}
-
 [data-tooltip]::after {
   content: attr(data-tooltip);
   position: absolute;
@@ -236,12 +239,21 @@ section {
 }
 
 .main__container {
-  padding: 0 0 20px 0;
+  padding-bottom: 20px;
   max-width: $screen-max-width;
   margin: 0 auto;
+}
 
-  @include phones() {
-    padding: 0 0 30px 0;
-  }
+.content__wrapper {
+  background: $bg-mute;
+  height: 100%;
+  width: 100%;
+  border-radius: $page-br;
+  transition: color .5s, background-color .5s;
+  padding: var(--page-pdn);
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 1rem;
+  min-height: calc((100vh - #{$header-height}) / 2);
 }
 </style>

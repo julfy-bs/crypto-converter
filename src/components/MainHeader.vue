@@ -32,13 +32,10 @@ import MainProfile from '@/components/MainProfile.vue'
 
 .header {
   position: relative;
-  top: 0;
-  left: 0;
   z-index: $z-index-nav;
 }
 
 .navbar {
-  position: relative;
   padding: $header-pdn;
   height: $header-height;
   background-color: $bg;

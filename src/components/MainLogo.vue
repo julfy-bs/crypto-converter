@@ -45,6 +45,7 @@ import ElementSvg from '@/components/UI/ElementSvg.vue'
   font-size: 20px;
   line-height: 120%;
   letter-spacing: -0.03em;
+  color: $text-1;
   transition: color .25s;
 
   @include phones() {

@@ -1,7 +1,7 @@
 <template>
-  <div class="chart">
+  <section class="chart">
     <div class="chart__header">
-      <div class="chart__select">
+      <div class="chart__select chart__range">
         <button
           class="chart__button"
           :class="{'chart__button--active' : payload.days === '1'}"
@@ -33,7 +33,8 @@
           14d
         </button>
       </div>
-      <div class="chart__select">
+      <slot />
+      <div class="chart__select chart__frequency">
         <button
           class="chart__button"
           :class="{'chart__button--active' : payload.interval !== 'daily'}"
@@ -62,7 +63,7 @@
       :labels="labelArray"
       :points="pointsArray"
     />
-  </div>
+  </section>
 </template>
 
 <script setup lang="ts">
@@ -81,7 +82,7 @@ interface ChartPayload {
 }
 
 const isLoading = ref<boolean>(false)
-
+const getCoinData = async (payload: string) => await store.dispatch('coin/getCoinData', payload)
 const getChartData = async (payload: ChartPayload) => await store.dispatch('coin/getChartData', payload)
 const labelArray = computed((): string[] => store.getters['coin/labelArray'])
 const pointsArray = computed((): string[] => store.getters['coin/pointsArray'])
@@ -93,20 +94,19 @@ const payload = ref<ChartPayload>({
   interval: ''
 })
 
-const changePayload = async <K extends keyof ChartPayload> (key?: K, value?: ChartPayload[K]): Promise<ChartPayload> => {
-  console.log('start loading', isLoading.value)
+const changePayload = async <K extends keyof ChartPayload>(key?: K, value?: ChartPayload[K]): Promise<ChartPayload> => {
   isLoading.value = true
-  if(key && value) {
-  payload.value[key] = value
+  if (key && value) {
+    payload.value[key] = value
   }
   const data = await getChartData(payload.value)
   isLoading.value = false
-  console.log('end loading', isLoading.value)
   return data
 }
 
 onMounted(() => {
   changePayload()
+  getCoinData('bitcoin')
 })
 </script>
 
@@ -118,7 +118,6 @@ onMounted(() => {
   display: flex;
   flex-flow: column nowrap;
   gap: 40px;
-  min-height: 580px;
 }
 
 .chart__title {
@@ -129,17 +128,56 @@ onMounted(() => {
 }
 
 .chart__header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  display: grid;
+  width: 100%;
+  height: fit-content;
   gap: 1rem;
+  grid-template-columns: 1fr 2fr 2fr 1fr;
+  grid-template-rows: 2fr 1fr;
+
+  @include tablets() {
+    grid-template-rows: 1fr 1fr;
+  }
+
+  @include desktop() {
+    grid-column-gap: 1rem;
+    grid-row-gap: 0;
+    grid-template-rows: 1fr;
+  }
+}
+
+.chart__select.chart__range,
+.chart__select.chart__frequency {
+  width: 100%;
+  height: fit-content;
+  grid-row-start: 2;
+  grid-row-end: 2;
+
+  @include tablets() {
+    width: fit-content;
+  }
+}
+
+.chart__select.chart__range {
+  grid-column-start: 1;
+  grid-column-end: 2;
+
+  @include tablets() {
+    grid-column-start: 1;
+  }
+}
+
+.chart__select.chart__frequency {
+  grid-column-start: 4;
+  @include tablets() {
+    margin-left: auto;
+  }
 }
 
 .chart__select {
   display: inline-flex;
   width: fit-content;
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-
 
   .chart__button {
     color: $text-1;
@@ -150,6 +188,8 @@ onMounted(() => {
     display: flex;
     align-items: center;
     justify-content: center;
+    height: $btn-height;
+    flex: 1 1 auto;
 
     &--active {
       color: $white;
@@ -171,6 +211,10 @@ onMounted(() => {
       border-bottom-right-radius: $btn-br;
     }
 
+    &:focus {
+      outline: none;
+      background-color: $main-op-1;
+    }
   }
 }
 </style>

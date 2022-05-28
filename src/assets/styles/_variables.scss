@@ -17,6 +17,7 @@ $text-2: var(--text-2);
 $text-3: var(--text-3);
 // interactive color
 $main: var(--c-main-400);
+$main-op-1: var(--c-main-400-op-1);
 // bg color
 $bg: var(--bg);
 $bg-mute: var(--bg-mute);
@@ -28,10 +29,13 @@ $secondary-500: var(--c-secondary-500);
 // btn
 $btn-br: var(--btn-br);
 $btn-pdn: var(--btn-pdn);
+$btn-height: var(--btn-height);
 // page content
 $page-pdn: var(--page-pdn);
 $page-pdn-small: var(--page-pdn-small);
 $page-br: var(--page-br);
+// box-shadow
+$shadow: var(--shadow);
 /* interactive hover, focus */
 
 
