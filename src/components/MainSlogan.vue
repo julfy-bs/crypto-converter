@@ -15,7 +15,7 @@
   flex: 1 0 fit-content;
   display: none;
 
-  @include tablets-big() {
+  @include desktop() {
     display: block;
   }
 

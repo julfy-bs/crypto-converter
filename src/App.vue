@@ -1,10 +1,14 @@
 <template>
-  <main-header />
-  <main class="main">
-    <div class="main__container">
-      <router-view />
-    </div>
-  </main>
+  <div
+    class="app__container"
+  >
+    <main-header />
+    <main class="main">
+      <div class="main__container">
+        <router-view />
+      </div>
+    </main>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -20,27 +24,57 @@ import MainHeader from '@/components/MainHeader.vue'
   --screen-min-width: 380px;
   // colors
   --c-base-0: #FCFCFC;
+  --c-base-0-op-1: rgba(252,252,252, .1);
   --c-base-50: #F3F4F6;
   --c-base-200: #99A7B5;
   --c-base-300: #677B8F;
   --c-base-500: #012345;
+  --c-base-500-op-1: rgba(1,35,69, .1);
   --c-base-600: #011C37;
   --c-main-400: #4959FF;
   --c-secondary: #F84AB3;
   --c-secondary-500: #F61D9F;
+  --c-secondary-100: #42B883;
   //// decorators
   // btn
   --btn-br: 6px;
   --btn-pdn: 12px;
   // page content
-  --page-pdn: 56px 64px;
+  --header-padding: 0 16px;
+  --page-pdn: 32px 16px;
+  --page-pdn-small: 4px 8px;
+  --page-br: 24px;
 
   @media (min-width: 460px) {
     --header-height: 90px;
+    --header-padding: 0 24px;
+    --page-pdn: 40px 24px;
+    --page-pdn-small: 8px 16px;
+    --page-br: 32px;
   }
 
   @media (min-width: 768px) {
     --header-height: 100px;
+    --header-padding: 0 32px;
+    --page-pdn: 48px 32px;
+    --page-pdn-small: 16px 24px;
+    --page-br: 40px;
+  }
+
+  @media (min-width: 960px) {
+    --header-height: 100px;
+    --header-padding: 0 40px;
+    --page-pdn: 48px 40px;
+    --page-pdn-small: 28px 32px;
+    --page-br: 48px;
+  }
+
+  @media (min-width: 1280px) {
+    --header-height: 100px;
+    --header-padding: 0 64px;
+    --page-pdn: 56px 64px;
+    --page-pdn-small: 28px 32px;
+    --page-br: 48px;
   }
 }
 
@@ -49,6 +83,7 @@ import MainHeader from '@/components/MainHeader.vue'
   --text-1: var(--c-base-500);
   --text-2: var(--c-base-300);
   --text-3: var(--c-base-200);
+  --border-1: var(--c-base-500-op-1);
 
   --bg: var(--c-base-0);
   --bg-mute: var(--c-base-50);
@@ -59,6 +94,7 @@ import MainHeader from '@/components/MainHeader.vue'
   --text-1: var(--c-base-0);
   --text-2: var(--c-base-200);
   --text-3: var(--c-base-200);
+  --border-1: var(--c-base-0-op-1);
 
   --bg: var(--c-base-500);
   --bg-mute: var(--c-base-600);
@@ -79,14 +115,6 @@ html {
   @include tablets() {
     font-size: 16px;
   }
-}
-
-.app__container {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  background-color: $bg;
-  transition: background-color .5s;
 }
 
 *, :before, :after {
@@ -194,6 +222,14 @@ section {
   top: 3rem;
 }
 
+.app__container {
+  display: flex;
+  flex-direction: column;
+  max-height: 100vh;
+  background-color: $bg;
+  transition: background-color .5s;
+}
+
 .main {
   background-color: $bg;
   transition: color .5s, background-color .5s;
@@ -203,7 +239,6 @@ section {
   padding: 0 0 20px 0;
   max-width: $screen-max-width;
   margin: 0 auto;
-  height: calc(100vh - #{$header-height});
 
   @include phones() {
     padding: 0 0 30px 0;

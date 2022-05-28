@@ -39,18 +39,10 @@ import MainProfile from '@/components/MainProfile.vue'
 
 .navbar {
   position: relative;
-  padding: 0 12px;
+  padding: $header-pdn;
   height: $header-height;
   background-color: $bg;
   transition: color .5s, background-color .5s;
-
-  @include tablets() {
-    padding: 0 12px 0 32px;
-  }
-
-  @include desktop() {
-    padding: 0 32px;
-  }
 }
 
 .navbar__container {

@@ -1,8 +1,9 @@
 <template>
-  <div class="home">
-    <div class="content__wrapper">
-      <history-chart />
-    </div>
+  <div
+    id="content"
+    class="content__wrapper"
+  >
+    <history-chart />
   </div>
 </template>
 
@@ -14,15 +15,12 @@ import HistoryChart from '@/components/HistoryChart.vue'
 @import "../assets/styles/variables";
 @import "../assets/styles/mixins";
 
-.home {
+.content__wrapper {
   background: $bg-mute;
   height: 100%;
   width: 100%;
-  border-radius: 48px;
+  border-radius: $page-br;
   transition: color .5s, background-color .5s;
-}
-
-.content__wrapper {
   padding: var(--page-pdn);
 }
 </style>

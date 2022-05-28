@@ -1,6 +1,7 @@
 <template>
   <div class="user">
-    <button
+    <router-link
+      to="/profile"
       class="user__button"
       role="button"
       type="button"
@@ -16,7 +17,7 @@
         alt="user"
         class="user__image"
       >
-    </button>
+    </router-link>
   </div>
 </template>
 
