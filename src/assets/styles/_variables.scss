@@ -11,6 +11,7 @@ $font: var(--font);
 //// primary colors
 // intuitive color
 $white: var(--c-base-0);
+$green: var(--c-secondary-100);
 // text color
 $text-1: var(--text-1);
 $text-2: var(--text-2);
@@ -24,6 +25,7 @@ $bg-mute: var(--bg-mute);
 // border color
 $border-1: var(--border-1);
 //// secondary colors
+$secondary: var(--c-secondary);
 $secondary-500: var(--c-secondary-500);
 //// decorators
 // btn

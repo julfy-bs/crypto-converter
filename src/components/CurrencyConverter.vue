@@ -22,11 +22,9 @@
 </template>
 
 <script setup lang="ts">
-
 import CurrencyInput from '@/components/CurrencyInput.vue'
 import { CurrencyOption } from '@/models/CurrencyOption'
 import { useConverter } from '@/hooks/useConverter'
-
 const options: CurrencyOption[] = [
   {
     'id': 'bitcoin',

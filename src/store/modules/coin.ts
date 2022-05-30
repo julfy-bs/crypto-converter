@@ -3,6 +3,7 @@ import { State as RootState } from '@/store'
 import axios from 'axios'
 import CurrentData from '@/models/CurrentData'
 import Coin from '@/models/Coin'
+import CoinPricePayload from '@/models/CoinPricePayload'
 
 const coinsApi = 'https://api.coingecko.com/api/v3'
 export type State = {
@@ -64,7 +65,8 @@ const mutations: MutationTree<State> & Mutations = {
 
 export enum ActionTypes {
   getChartData = 'getChartData',
-  getCoinData = 'getCoinData'
+  getCoinData = 'getCoinData',
+  getCoinPrice = 'getCoinPrice'
 }
 
 type ChartActionContext = {
@@ -79,7 +81,6 @@ interface Actions {
     { commit }: ChartActionContext,
     payload: { id: string; currency: string; days: string; interval: string; },
   ): void
-
   [ActionTypes.getCoinData](
     { commit }: ChartActionContext,
     payload: string,
@@ -136,8 +137,8 @@ const actions: ActionTree<State, RootState> & Actions = {
 }
 
 export type Getters = {
-  pointsArray(state: State): number[]
-  labelArray(state: State): string[]
+  pointsArray(state: State): number[];
+  labelArray(state: State): string[];
 }
 
 const getters: GetterTree<State, RootState> & Getters = {

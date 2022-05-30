@@ -1,65 +1,12 @@
 <template>
   <section class="chart">
     <div class="chart__header">
-      <div class="chart__select chart__range">
-        <button
-          class="chart__button"
-          :class="{'chart__button--active' : payload.days === '1'}"
-          role="switch"
-          type="button"
-          aria-label="choose price selection"
-          @click="changePayload('days', '1')"
-        >
-          24h
-        </button>
-        <button
-          class="chart__button"
-          :class="{'chart__button--active' : payload.days === '7'}"
-          role="switch"
-          type="button"
-          aria-label="choose price selection"
-          @click="changePayload('days', '7')"
-        >
-          7d
-        </button>
-        <button
-          class="chart__button"
-          :class="{'chart__button--active' : payload.days === '14'}"
-          role="switch"
-          type="button"
-          aria-label="choose price selection"
-          @click="changePayload('days', '14')"
-        >
-          14d
-        </button>
-      </div>
+      <history-chart-range />
       <slot />
-      <div class="chart__select chart__frequency">
-        <button
-          class="chart__button"
-          :class="{'chart__button--active' : payload.interval !== 'daily'}"
-          role="switch"
-          type="button"
-          aria-label="choose price selection"
-          @click="changePayload('interval', 'frequent')"
-        >
-          frequent
-        </button>
-        <button
-          class="chart__button"
-          :class="{'chart__button--active' : payload.interval === 'daily'}"
-          role="switch"
-          type="button"
-          aria-label="choose price selection"
-          @click="changePayload('interval', 'daily')"
-        >
-          daily
-        </button>
-      </div>
+      <history-chart-frequency />
     </div>
-    <element-loader v-if="isLoading" />
     <element-line-chart
-      v-else-if="labelArray && pointsArray"
+      v-if="labelArray && pointsArray"
       :labels="labelArray"
       :points="pointsArray"
     />
@@ -68,21 +15,13 @@
 
 <script setup lang="ts">
 import ElementLineChart from '@/components/UI/ElementLineChart.vue'
-import ElementLoader from '@/components/UI/ElementLoader.vue'
-import { onMounted } from 'vue'
 import { useConverter } from '@/hooks/useConverter'
-
-
-const { changePayload, getChartData, getCoinData, payload, labelArray, pointsArray, isLoading } = useConverter()
-
-
-onMounted(async () => {
-  await getCoinData('bitcoin')
-  await getChartData(payload.value)
-})
+import HistoryChartRange from '@/components/HistoryChartRange.vue'
+import HistoryChartFrequency from '@/components/HistoryChartFrequency.vue'
+const { labelArray, pointsArray } = useConverter()
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import "../assets/styles/variables";
 @import "../assets/styles/mixins";
 

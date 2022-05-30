@@ -18,6 +18,22 @@
 
 <script setup lang="ts">
 import MainHeader from '@/components/MainHeader.vue'
+import { onMounted } from 'vue'
+import { useConverter } from '@/hooks/useConverter'
+import { useWallet } from '@/hooks/useWallet'
+import { useLoading } from '@/hooks/useLoading'
+
+const { getChartData, getCoinData, payload } = useConverter()
+const { getCoinPrice } = useWallet()
+const { toggleLoading } = useLoading()
+onMounted(async () => {
+  toggleLoading()
+  await getCoinData('bitcoin')
+  await getChartData(payload.value)
+  await getCoinPrice({ id: 'bitcoin', vs_currency: 'usd' })
+  await getCoinPrice({ id: 'ethereum', vs_currency: 'usd' })
+  toggleLoading()
+})
 </script>
 
 <style lang="scss">
