@@ -162,7 +162,7 @@ const { addCurrency, subtractCurrency } = useArithmetic()
   position: relative;
 }
 
-.currency__select, .currency__input {
+.currency__select, input.currency__input {
   max-width: 100%;
   width: 100%;
   background-color: transparent;
