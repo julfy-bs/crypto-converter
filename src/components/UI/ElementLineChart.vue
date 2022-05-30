@@ -72,7 +72,6 @@ const tooltipLine = {
   }
 }
 
-
 const options = ref({
   responsive: true,
   maintainAspectRatio: false,
@@ -103,10 +102,7 @@ const options = ref({
       display: true,
       ticks: {
         display: true,
-        color: '#677B8F',
-        callback: (value: number): string => {
-          return new Intl.NumberFormat('eu-EU', { style: 'currency', currency: 'USD' }).format(value)
-        }
+        color: '#677B8F'
       }
     }
   },

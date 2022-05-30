@@ -1,0 +1,1 @@
+export type CurrentCurrency = 'usd' | 'btc' | 'eth'

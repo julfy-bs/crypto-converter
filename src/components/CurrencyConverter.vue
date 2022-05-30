@@ -4,40 +4,47 @@
       class="converter__content"
     >
       <currency-input
+        :active-option="optionsFrom"
         :options="options"
-        default-value="btc"
+        :model-value="valueFrom"
+        type="from"
+        @update:modelValue="newValue => valueFrom = newValue"
       />
       <currency-input
+        :active-option="optionsTo"
         :options="options"
-        default-value="usd"
+        :model-value="valueTo"
+        type="to"
+        @update:modelValue="newValue => valueTo = newValue"
       />
     </div>
   </section>
 </template>
 
 <script setup lang="ts">
+
 import CurrencyInput from '@/components/CurrencyInput.vue'
 import { CurrencyOption } from '@/models/CurrencyOption'
+import { useConverter } from '@/hooks/useConverter'
+
 const options: CurrencyOption[] = [
   {
     'id': 'bitcoin',
     'symbol': 'btc',
-    'name': 'Bitcoin',
-    'price': 1,
+    'name': 'Bitcoin'
   },
   {
     'id': 'ethereum',
     'symbol': 'eth',
-    'name': 'Ethereum',
-    'price': 1,
+    'name': 'Ethereum'
   },
   {
     'id': 'usd',
     'symbol': 'usd',
-    'name': 'US Dollar',
-    'price': 1,
+    'name': 'US Dollar'
   }
 ]
+const { valueTo, optionsTo, valueFrom, optionsFrom } = useConverter()
 </script>
 
 <style lang="scss" scoped>

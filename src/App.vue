@@ -254,6 +254,16 @@ img, video {
   display: flex;
   flex-flow: column nowrap;
   gap: 1rem;
-  min-height: calc((100vh - #{$header-height}) / 2);
+  min-height: calc((100vh - #{$header-height} - 20px));
+}
+
+.content__title {
+  color: $text-1;
+  transition: color .25s;
+  text-align: center;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 40px;
+  line-height: 120%;
 }
 </style>

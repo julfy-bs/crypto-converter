@@ -69,44 +69,16 @@
 <script setup lang="ts">
 import ElementLineChart from '@/components/UI/ElementLineChart.vue'
 import ElementLoader from '@/components/UI/ElementLoader.vue'
-import { useStore } from 'vuex'
-import { computed, onMounted, ref } from 'vue'
+import { onMounted } from 'vue'
+import { useConverter } from '@/hooks/useConverter'
 
-const store = useStore()
 
-interface ChartPayload {
-  id: string;
-  currency: string;
-  days: string;
-  interval: string;
-}
+const { changePayload, getChartData, getCoinData, payload, labelArray, pointsArray, isLoading } = useConverter()
 
-const isLoading = ref<boolean>(false)
-const getCoinData = async (payload: string) => await store.dispatch('coin/getCoinData', payload)
-const getChartData = async (payload: ChartPayload) => await store.dispatch('coin/getChartData', payload)
-const labelArray = computed((): string[] => store.getters['coin/labelArray'])
-const pointsArray = computed((): string[] => store.getters['coin/pointsArray'])
 
-const payload = ref<ChartPayload>({
-  id: 'bitcoin',
-  currency: 'usd',
-  days: '14',
-  interval: ''
-})
-
-const changePayload = async <K extends keyof ChartPayload>(key?: K, value?: ChartPayload[K]): Promise<ChartPayload> => {
-  isLoading.value = true
-  if (key && value) {
-    payload.value[key] = value
-  }
-  const data = await getChartData(payload.value)
-  isLoading.value = false
-  return data
-}
-
-onMounted(() => {
-  changePayload()
-  getCoinData('bitcoin')
+onMounted(async () => {
+  await getCoinData('bitcoin')
+  await getChartData(payload.value)
 })
 </script>
 

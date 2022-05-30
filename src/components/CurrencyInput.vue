@@ -11,7 +11,7 @@
       @click="toggleFlyout(group, button)"
     >
       <span>
-        {{ props.defaultValue.toUpperCase() }}
+        {{ props.activeOption.symbol.toUpperCase() }}
       </span>
     </button>
     <transition name="modal-animation">
@@ -24,10 +24,11 @@
           v-for="option in options"
           :key="option.id"
           class="dropdown__item"
-          :class="{'dropdown__item--active': option.symbol === currentData.symbol}"
+          :class="{'dropdown__item--active': option.symbol === activeOption.symbol}"
           type="button"
           role="button"
           aria-label="change active currency"
+          @click="updateApp(option)"
         >
           <span class="item__symbol">
             {{ option.symbol }}
@@ -39,54 +40,60 @@
       </div>
     </transition>
     <input
-      v-model="input"
       type="text"
       name="exchange input"
-      @focusin="clearInput"
-      @keydown="convertAction($event)"
-      @focusout="activateCurrencyMask(+input)"
+      :value="modelValue"
+      @focusin="clearInput(modelValue, type)"
+      @keydown="validateCurrency($event)"
+      @keyup="convertMoney(modelValue, type)"
+      @focusout="activateCurrencyMask(modelValue, props.activeOption.symbol, type)"
+      @input="$emit('update:modelValue', $event.currentTarget.value)"
     >
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, defineProps, ref } from 'vue'
+import { defineEmits, defineProps, ref } from 'vue'
 import { CurrencyOption } from '@/models/CurrencyOption.ts'
 import { validateCurrency } from '@/helpers/validateCurrency.ts'
-import { formatCurrency } from '@/helpers/formatCurrency.ts'
 import { useFlayout } from '@/hooks/useFlayout'
-import CurrentData from '@/models/CurrentData'
-import { useStore } from 'vuex'
 import { useConverter } from '@/hooks/useConverter'
+import { InputType } from '@/models/InputType'
+
 
 interface Props {
   options: CurrencyOption[];
-  defaultValue: string;
-  name: string;
+  modelValue: string;
+  type: InputType;
+  activeOption: CurrencyOption;
 }
-const store = useStore()
-const currentData = computed((): CurrentData => store.getters['coin/currentData'])
+
 const group = ref<HTMLDivElement | null>(null)
 const button = ref<HTMLButtonElement | null>(null)
 const { closeFlyout, toggleFlyout } = useFlayout()
 const props = defineProps<Props>()
-const input = ref<HTMLInputElement | string>('')
+defineEmits(['update:modelValue'])
+const {
+  changePayload,
+  optionsFrom,
+  optionsTo,
+  getCoinData,
+  changeActiveOptions,
+  convertMoney,
+  activateCurrencyMask,
+  clearInput,
+  eraseInput
+} = useConverter()
 
-const clearInput = () => {
-  input.value = input.value
-      .toString()
-      .replace(',00', '')
-      .replace('$', '')
-      .replace(/\s/g, '')
-}
-const activateCurrencyMask = (value: number) => {
-  input.value = ''
-  input.value = formatCurrency(+value)
-}
-const { convertMoney } = useConverter()
-const convertAction = (event: KeyboardEvent) => {
-  convertMoney()
-  validateCurrency(event)
+const updateApp = async (option: CurrencyOption) => {
+  eraseInput()
+  changeActiveOptions({
+    id: option.id,
+    symbol: option.symbol,
+    name: option.name,
+  }, props.type)
+  await getCoinData(optionsFrom.value.id)
+  await changePayload('currency', optionsTo.value.symbol)
 }
 </script>
 
@@ -171,7 +178,7 @@ const convertAction = (event: KeyboardEvent) => {
     align-items: center;
     border-bottom: 1px solid $border-1;
     border-radius: $btn-br;
-    width: 100% ;
+    width: 100%;
 
     &:first-child {
       border-top-left-radius: $btn-br;
@@ -217,6 +224,7 @@ const convertAction = (event: KeyboardEvent) => {
 .currency__input.open {
   height: auto;
 }
+
 .input__button[aria-expanded=true] + .input__dropdown {
   opacity: 1;
   visibility: visible;

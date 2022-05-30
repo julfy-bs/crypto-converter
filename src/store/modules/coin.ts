@@ -8,6 +8,7 @@ const coinsApi = 'https://api.coingecko.com/api/v3'
 export type State = {
   chart: string[];
   coin: Coin;
+  currentData: CurrentData;
 }
 
 const state = (): State => ({
@@ -24,17 +25,29 @@ const state = (): State => ({
       }
     },
     last_updated: ''
+  },
+  currentData: {
+    id: '',
+    name: '',
+    symbol: '',
+    price: {
+      usd: 0,
+      btc: 0,
+      eth: 0
+    },
   }
 })
 
 export enum MutationTypes {
   GET_CHART_DATA = 'GET_CHART_DATA',
   GET_COIN_DATA = 'GET_COIN_DATA',
+  GET_CURRENT_DATA = 'GET_CURRENT_DATA'
 }
 
 export type Mutations<S = State> = {
   [MutationTypes.GET_CHART_DATA](state: S, payload: string[]): void
   [MutationTypes.GET_COIN_DATA](state: S, payload: Coin): void
+  [MutationTypes.GET_CURRENT_DATA](state: S, payload: CurrentData): void
 }
 
 const mutations: MutationTree<State> & Mutations = {
@@ -43,6 +56,9 @@ const mutations: MutationTree<State> & Mutations = {
   },
   [MutationTypes.GET_COIN_DATA](state: State, payload) {
     state.coin = payload
+  },
+  [MutationTypes.GET_CURRENT_DATA](state, payload) {
+    state.currentData = payload
   }
 }
 
@@ -103,7 +119,16 @@ const actions: ActionTree<State, RootState> & Actions = {
         }
       })
       commit(MutationTypes.GET_COIN_DATA, data)
-
+      commit(MutationTypes.GET_CURRENT_DATA, {
+        id: data.id,
+        name: data.name,
+        symbol: data.symbol,
+        price: {
+          usd: data.market_data.current_price.usd,
+          eth: data.market_data.current_price.eth,
+          btc: data.market_data.current_price.btc
+        }
+      })
     } catch (e) {
       throw new Error(e)
     }
@@ -113,11 +138,10 @@ const actions: ActionTree<State, RootState> & Actions = {
 export type Getters = {
   pointsArray(state: State): number[]
   labelArray(state: State): string[]
-  currentData(state: State): CurrentData
 }
 
 const getters: GetterTree<State, RootState> & Getters = {
-  pointsArray: (state: State): number[] => {
+  pointsArray: (state: State) => {
     const array: number[] = []
     state.chart.forEach(item => {
       const value = Number(item[1]).toFixed(2)
@@ -125,7 +149,7 @@ const getters: GetterTree<State, RootState> & Getters = {
     })
     return array
   },
-  labelArray: (state: State): string[] => {
+  labelArray: (state: State) => {
     const array: string[] = []
     state.chart.forEach(item => {
       const dateOptions = {
@@ -136,14 +160,6 @@ const getters: GetterTree<State, RootState> & Getters = {
       array.push(result)
     })
     return array
-  },
-  currentData: (state: State): CurrentData => {
-    return {
-      id: state.coin?.id,
-      name: state.coin?.name,
-      symbol: state.coin?.symbol,
-      price: state.coin?.market_data.current_price.usd,
-    }
   }
 }
 
