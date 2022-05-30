@@ -6,6 +6,7 @@ import axios from 'axios'
 import WalletRate from '@/models/WalletRate'
 import { WalletRateAvailableValues, WalletRateKey, WalletRatePayload, WalletRateValue } from '@/models/WalletRatePayload'
 import { convertValueToUsd } from '@/helpers/convertValueToUsd'
+import { CurrencyType } from '@/models/CurrencyType'
 
 const coinsApi = 'https://api.coingecko.com/api/v3'
 export type State = {
@@ -67,7 +68,7 @@ export type Mutations<S = State> = {
   ): void
   [MutationTypes.SUBTRACT_CURRENCY](
     state: S,
-    payload: WalletPayload<WalletKey, WalletValue>
+    payload: { key: CurrencyType, value: string}
   ): void
 }
 
@@ -82,10 +83,10 @@ const mutations: MutationTree<State> & Mutations = {
     state.wallet[payload].isEditable = !state.wallet[payload].isEditable
   },
   [MutationTypes.SUBTRACT_CURRENCY](state: State, payload) {
-    state.wallet[payload.key].value = (+state.wallet[payload.key].value - +payload.value).toString()
+    state.wallet[payload.key].value = (Number(state.wallet[payload.key].value) - Number(payload.value)).toString()
   },
   [MutationTypes.ADD_CURRENCY](state: State, payload) {
-    state.wallet[payload.key].value = (+state.wallet[payload.key].value + +payload.value).toString()
+    state.wallet[payload.key].value = (Number(state.wallet[payload.key].value) + Number(payload.value)).toString()
   },
 }
 

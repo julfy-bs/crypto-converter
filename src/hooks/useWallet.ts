@@ -3,6 +3,7 @@ import { Mutation, useStore } from 'vuex'
 import Wallet from '@/models/Wallet'
 import { WalletKey, WalletPayload, WalletValue } from '@/models/WalletPayload'
 import CoinPricePayload from '@/models/CoinPricePayload'
+import { CurrencyType } from '@/models/CurrencyType'
 
 interface useWalletReturn {
   wallet: ComputedRef<Wallet>;

@@ -35,14 +35,12 @@
           class="currency__input"
         >
         <button
-          v-if="isSummation"
           role="button"
           type="button"
           class="currency__button"
-          @click="doArithmetic({modelSelect,
-                                modelInput})"
+          @click="doArithmetic(modelSelect, modelInput)"
         >
-          Sum up
+          {{ isSummation ? 'Sum up' : 'Subtract' }}
         </button>
       </div>
       <button
@@ -66,19 +64,27 @@ import { useArithmetic } from '@/hooks/useArithmetic'
 import { computed, ref } from 'vue'
 import { useStore } from 'vuex'
 import Wallet from '@/models/Wallet'
-import { WalletKey, WalletPayload, WalletValue } from '@/models/WalletPayload'
+import { CurrencyType } from '@/models/CurrencyType'
 
 const { totalPrice } = useWallet()
 const { isSummation, toggleArithmetic } = useArithmetic()
 
-const modelSelect = ref<HTMLSelectElement | string>('btc')
-const modelInput = ref<HTMLInputElement | string>('')
+const modelSelect = ref<CurrencyType>('btc')
+const modelInput = ref<string>('')
 
-const doArithmetic = (payload: WalletPayload<WalletKey, WalletValue>) => {
-  if (isSummation) {
-    addCurrency(payload)
-  } else {
-    subtractCurrency(payload)
+const doArithmetic = (selectValue: CurrencyType, inputValue: string) => {
+  if (selectValue && inputValue) {
+    const payload: { key: CurrencyType, value: string } = {
+      key: selectValue,
+      value: inputValue
+    }
+    if (isSummation.value) {
+      addCurrency(payload)
+    } else {
+      subtractCurrency(payload)
+    }
+    modelInput.value = ''
+    return false
   }
 }
 
@@ -144,6 +150,8 @@ const { addCurrency, subtractCurrency } = useArithmetic()
 }
 
 .arithmetic-operations__title {
+  color: $text-1;
+  transition: color .25s;
   font-weight: 500;
   font-size: 24px;
   line-height: 120%;
@@ -163,6 +171,8 @@ const { addCurrency, subtractCurrency } = useArithmetic()
 }
 
 .currency__select, input.currency__input {
+  color: $text-1;
+  transition: color .25s;
   max-width: 100%;
   width: 100%;
   background-color: transparent;
